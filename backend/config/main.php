@@ -9,9 +9,11 @@ $params = array_merge(
 return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
+    'name' => 'Free Code Tube',
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
+    'language' => 'en-US',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
