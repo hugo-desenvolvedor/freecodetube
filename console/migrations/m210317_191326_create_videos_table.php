@@ -15,18 +15,22 @@ class m210317_191326_create_videos_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%video}}', [
-            'video_id' => $this->string(16)->notNull(),
-            'title' => $this->string(512)->notNull(),
-            'description' => $this->text(),
-            'tags' => $this->string(512),
-            'status' => $this->integer(1),
-            'has_thumbnail' => $this->boolean(),
-            'video_name' => $this->string(512),
-            'created_at' => $this->integer(11),
-            'updated_at' => $this->integer(11),
-            'created_by' => $this->integer(11),
-        ]);
+        $this->createTable(
+            '{{%video}}',
+            [
+                'video_id' => $this->string(16)->notNull(),
+                'title' => $this->string(512)->notNull(),
+                'description' => $this->text(),
+                'tags' => $this->string(512),
+                'status' => $this->integer(1),
+                'has_thumbnail' => $this->boolean(),
+                'video_name' => $this->string(512),
+                'created_at' => $this->integer(11),
+                'updated_at' => $this->integer(11),
+                'created_by' => $this->integer(11),
+            ],
+            'ENGINE InnoDB'
+        );
 
         $this->addPrimaryKey('PK_videos_video_id', '{{%video}}', 'video_id');
 
