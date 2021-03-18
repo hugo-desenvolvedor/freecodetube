@@ -39,12 +39,23 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        /*
+         * Set the url configuration, such as using friendly urls or default format.
+         */
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'video/update/<id>' => 'video/update' // Friendly url for update id
             ],
         ],
+        'assetManager' => [
+            /*
+             * Add a timestamp o css files. By the time the css is updated and the browser is reloaded,
+             * the timestamp changes and the new asset is loaded.
+             */
+            'appendTimestamp' => true,
+        ]
     ],
     'params' => $params,
 ];
