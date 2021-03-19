@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'options' => ['enctype' => 'multipart/form-data']
         ]) ?>
 
-        <?php echo $form->errorSummary($model) ?>
+        <?= $form->errorSummary($model) ?>
 
         <button class="btn btn-primary btn-file">
             Select File

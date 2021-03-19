@@ -6,6 +6,8 @@ use yii\bootstrap4\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Video */
 /* @var $form yii\widgets\ActiveForm */
+
+\backend\assets\TagsInputAsset::register($this);
 ?>
 
 <div class="video-form">
@@ -29,7 +31,15 @@ use yii\bootstrap4\ActiveForm;
                 </div>
             </div>
 
-            <?= $form->field($model, 'tags')->textInput(['maxlength' => true]) ?>
+            <?php
+                echo $form->field(
+                    $model,
+                    'tags',
+                    [
+                        'inputOptions' => ['data-role' => 'tagsinput']
+                    ]
+                )->textInput(['maxlength' => true])
+            ?>
         </div>
         <div class="col-sm-4">
             <div class="embed-responsive embed-responsive-16by9 mb-3">
