@@ -80,7 +80,7 @@ class Video extends \yii\db\ActiveRecord
             ['status', 'default', 'value' => self::STATUS_UNLISTED],
             ['thumbnail', 'image', 'extensions' => ['jpg'], 'minWidth' => 1280],
             ['video', 'file', 'extensions' => ['mp4']],
-//            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class(), 'targetAttribute' => ['created_by' => 'id']],
+//            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
         ];
     }
 
@@ -122,7 +122,7 @@ class Video extends \yii\db\ActiveRecord
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(User::class(), ['id' => 'created_by']);
+        return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
     /**

@@ -11,6 +11,7 @@ return [
     'name' => 'Free Code Tube',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'defaultRoute' => 'video/index',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
