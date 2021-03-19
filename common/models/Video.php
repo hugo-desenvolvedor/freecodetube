@@ -173,7 +173,6 @@ class Video extends \yii\db\ActiveRecord
 
         if ($this->thumbnail) {
             $path = sprintf('@frontend/web/storage/thumbs/%s.jpg', $this->video_id);
-
             $thumbnailPath = Yii::getAlias($path);
 
             if (!is_dir(dirname($thumbnailPath))) {
@@ -191,6 +190,10 @@ class Video extends \yii\db\ActiveRecord
         return true;
     }
 
+    /**
+     * Get the video url
+     * @return string
+     */
     public function getVideoLink(): string
     {
         $url = sprintf(
@@ -202,6 +205,10 @@ class Video extends \yii\db\ActiveRecord
         return $url;
     }
 
+    /**
+     * Get the thumbnail url
+     * @return string
+     */
     public function getThumbnailLink(): string
     {
         $url = sprintf(
@@ -211,5 +218,18 @@ class Video extends \yii\db\ActiveRecord
         );
 
         return $this->has_thumbnail ? $url : "";
+    }
+
+    public function afterDelete()
+    {
+        $videoPath = sprintf('@frontend/web/storage/videos/%s.mp4', $this->video_id);
+        $videoPath = Yii::getAlias($videoPath);
+        unlink($videoPath);
+
+        $thumbnailPath = sprintf('@frontend/web/storage/thumbs/%s.jpg', $this->video_id);
+        $thumbnailPath = Yii::getAlias($thumbnailPath);
+        if (file_exists($thumbnailPath)) {
+            unlink($thumbnailPath);
+        }
     }
 }
