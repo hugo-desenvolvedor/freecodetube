@@ -2,10 +2,12 @@
 
 namespace common\models;
 
+use Imagine\Image\Box;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\FileHelper;
+use yii\imagine\Image;
 use yii\web\UploadedFile;
 
 /**
@@ -76,6 +78,7 @@ class Video extends \yii\db\ActiveRecord
             [['video_id'], 'unique'],
             ['has_thumbnail', 'default', 'value' => 0],
             ['status', 'default', 'value' => self::STATUS_UNLISTED],
+            ['thumbnail', 'image', 'minWidth' => 1280],
 //            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class(), 'targetAttribute' => ['created_by' => 'id']],
         ];
     }
@@ -177,12 +180,17 @@ class Video extends \yii\db\ActiveRecord
             }
 
             $this->thumbnail->saveAs($thumbnailPath);
+
+            Image::getImagine()
+                ->open($thumbnailPath)
+                ->thumbnail(new Box(1280, 1280))
+                ->save();
         }
 
         return true;
     }
 
-    public function getVideoLink()
+    public function getVideoLink(): string
     {
         $url = sprintf(
             '%s/storage/videos/%s.mp4',
@@ -191,5 +199,16 @@ class Video extends \yii\db\ActiveRecord
         );
 
         return $url;
+    }
+
+    public function getThumbnailLink(): string
+    {
+        $url = sprintf(
+            '%s/storage/thumbs/%s.jpg',
+            Yii::$app->params['frontendUrl'],
+            $this->video_id
+        );
+
+        return $this->has_thumbnail ? $url : "";
     }
 }
