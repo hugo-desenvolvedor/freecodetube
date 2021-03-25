@@ -5,24 +5,28 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%video_view}}".
+ * This is the model class for table "{{%video_like}}".
  *
  * @property int $id
  * @property string $video_id
- * @property int|null $user_id
+ * @property int $user_id
+ * @property int|null $type
  * @property int|null $created_at
  *
  * @property User $user
  * @property Video $video
  */
-class VideoView extends \yii\db\ActiveRecord
+class VideoLike extends \yii\db\ActiveRecord
 {
+    const TYPE_LIKE = 1;
+    const TYPE_DISLIKE = 0;
+
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return '{{%video_view}}';
+        return '{{%video_like}}';
     }
 
     /**
@@ -31,8 +35,8 @@ class VideoView extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['video_id'], 'required'],
-            [['user_id', 'created_at'], 'integer'],
+            [['video_id', 'user_id'], 'required'],
+            [['user_id', 'type', 'created_at'], 'integer'],
             [['video_id'], 'string', 'max' => 16],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['video_id'], 'exist', 'skipOnError' => true, 'targetClass' => Video::className(), 'targetAttribute' => ['video_id' => 'video_id']],
@@ -48,6 +52,7 @@ class VideoView extends \yii\db\ActiveRecord
             'id' => 'ID',
             'video_id' => 'Video ID',
             'user_id' => 'User ID',
+            'type' => 'Type',
             'created_at' => 'Created At',
         ];
     }
@@ -74,10 +79,10 @@ class VideoView extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \common\models\query\VideoViewQuery the active query used by this AR class.
+     * @return \common\models\query\VideoLikeQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \common\models\query\VideoViewQuery(get_called_class());
+        return new \common\models\query\VideoLikeQuery(get_called_class());
     }
 }

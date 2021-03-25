@@ -126,6 +126,14 @@ class Video extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getViews()
+    {
+        return $this->hasMany(VideoView::class, ['video_id' => 'video_id']);
+    }
+
+    /**
      * {@inheritdoc}
      * @return \common\models\query\VideoQuery the active query used by this AR class.
      */
@@ -220,7 +228,7 @@ class Video extends \yii\db\ActiveRecord
         return $this->has_thumbnail ? $url : "";
     }
 
-    public function afterDelete()
+    public function afterDelete(): void
     {
         $videoPath = sprintf('@frontend/web/storage/videos/%s.mp4', $this->video_id);
         $videoPath = Yii::getAlias($videoPath);
@@ -231,5 +239,28 @@ class Video extends \yii\db\ActiveRecord
         if (file_exists($thumbnailPath)) {
             unlink($thumbnailPath);
         }
+    }
+
+    /**
+     * @param $userId
+     * @return array|VideoLike|null
+     */
+    public function isLikedBy($userId)
+    {
+        return VideoLike::find()
+            ->byUserIdAndVideoId($userId, $this->video_id)
+            ->liked()
+            ->one();
+    }
+
+    /**
+     * @return int|string
+     */
+    public function totalLikes()
+    {
+        return VideoLike::find()
+            ->andWhere(['video_id' => $this->video_id])
+            ->liked()
+            ->count();
     }
 }

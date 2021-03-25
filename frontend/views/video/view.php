@@ -1,6 +1,8 @@
 <?php
 /** @var $model \common\models\Video */
 
+use yii\widgets\Pjax;
+
 ?>
 
 <div class="row">
@@ -17,15 +19,17 @@
         <h6 class="mt-2"><?= $model->title ?></h6>
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                123 views &bull; <?= Yii::$app->formatter->asDate($model->created_at) ?>
+                <?= $model->getViews()->count() ?> views &bull; <?= Yii::$app->formatter->asDate($model->created_at) ?>
             </div>
             <div>
-                <button class="btn btn-sm btn-outline-primary">
-                    <i class="fas fa-thumbs-up"></i> 9
-                </button>
-                <button class="btn btn-sm btn-outline-secondary">
-                    <i class="fas fa-thumbs-down"></i> 3
-                </button>
+                <?php Pjax::begin() ?>
+                <?= $this->render(
+                    '_buttons',
+                    [
+                        'model' => $model
+                    ]
+                ) ?>
+                <?php Pjax::end() ?>
             </div>
         </div>
     </div>
